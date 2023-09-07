@@ -37,6 +37,10 @@ local_parameters = [{'name': 'camera_name1', 'default': 'camera1', 'description'
                     {'name': 'camera_name2', 'default': 'camera2', 'description': 'camera2 unique name'},
                     {'name': 'camera_namespace1', 'default': 'camera1', 'description': 'camera1 namespace'},
                     {'name': 'camera_namespace2', 'default': 'camera2', 'description': 'camera2 namespace'},
+                    {'name': 'serial_no1', 'default': '_244222075475', 'description': 'camera1 unique serial'},
+                    {'name': 'serial_no2', 'default': '_215222075741', 'description': 'camera2 unique serial'},
+                    {'name': 'pointcloud.enable1', 'default': 'true', 'description': 'enable pointcloud1'},
+                    {'name': 'pointcloud.enable2', 'default': 'true', 'description': 'enable pointcloud2'},
                     ]
 
 def set_configurable_parameters(local_params):
@@ -49,7 +53,7 @@ def duplicate_params(general_params, posix):
         param['name'] += posix
     return local_params
 
-def launch_static_transform_publisher_node(context : LaunchContext):
+def add_node_action(context : LaunchContext):
     # dummy static transformation from camera1 to camera2
     node = launch_ros.actions.Node(
             package = "tf2_ros",
@@ -74,5 +78,5 @@ def generate_launch_description():
         OpaqueFunction(function=rs_launch.launch_setup,
                        kwargs = {'params'           : set_configurable_parameters(params2),
                                  'param_name_suffix': '2'}),
-        OpaqueFunction(function=launch_static_transform_publisher_node)
+        OpaqueFunction(function=add_node_action)
     ])
